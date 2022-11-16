@@ -13,3 +13,10 @@ RUN curl https://gitlab.com/api/v4/projects/5024297/packages/generic/pdftk-java/
 		-H:ResourceConfigurationFiles='resource-config.json' \
 		-H:ReflectionConfigurationFiles='reflect-config.json' \
 		-H:GenerateDebugInfo=0
+
+
+FROM scratch AS standalone-binary
+COPY --from=graalvm /build/pdftk /pdftk
+
+# This is defined as last target to be backward compatible with build without explicit --target option
+FROM graalvm AS default
